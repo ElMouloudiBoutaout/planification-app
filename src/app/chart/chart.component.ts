@@ -22,7 +22,7 @@ export class ChartComponent implements OnInit, AfterViewInit {
   public lineChartData: Array<any> = [
     { data: [0], label: 'Progression' }
   ];
-  public lineChartLabels: Array<any> = ['a','b','c','d','e'];
+  public lineChartLabels: Array<any> = ['a','b','c','d','f'];
   public lineChartOptions: any = {
     responsive: true
   };
