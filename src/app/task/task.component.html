@@ -1,0 +1,8 @@
+<h1>Tasks</h1>
+
+<ng2-smart-table [settings]="table" [source]="source"
+ (createConfirm)="onCreateConfirm($event);sendData()"
+   (deleteConfirm)="onDeleteConfirm($event);sendData()"
+  (editConfirm)="onUpdate($event);sendData()"
+  >
+</ng2-smart-table>
