@@ -1,7 +1,11 @@
 
 <!--[style.border]="someProperty ? '5px solid yellow' : 'none'"-->
+
+
 <app-task (dataEvent)="recieveData($event)"
  ></app-task>
+
+<div style=" height: 200px;width: 500px;" >
 <div [style.display]="showChart ? 'inline' : 'none'">
     <div class="row">
       <div class="col-md-6">
@@ -29,4 +33,5 @@
         <button (click)="insertData()">CLICK</button>
       </div>
     </div>
+</div>
 </div>
