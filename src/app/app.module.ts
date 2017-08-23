@@ -8,12 +8,14 @@ import { TaskComponent } from './task/task.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { ChartsModule } from 'ng2-charts';
 import { ChartComponent } from './chart/chart.component';
+import { AgendaComponent } from './agenda/agenda.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TaskComponent,
-    ChartComponent
+    ChartComponent,
+    AgendaComponent
   ],
   imports: [
     BrowserModule, FormsModule, HttpModule, Ng2SmartTableModule, ChartsModule
