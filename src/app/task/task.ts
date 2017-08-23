@@ -17,4 +17,15 @@ export class Task {
         this.endD=end;
     }
 
+    getTimeStamp(now : Date) {
+        const date = now.getUTCFullYear() + '/'
+          + now.getUTCMonth() + '/'
+          + now.getUTCDate();
+        const time = now.getUTCHours() + ':'
+          + now.getUTCMinutes() + ':'
+          + now.getUTCSeconds();
+        return (date + ' ' + time);
+      }
+
+
 }

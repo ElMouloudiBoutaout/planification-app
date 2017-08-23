@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { Observable } from "rxjs/Observable";
 import  'rxjs/add/Observable/throw'
-import { Task } from "./task/task";
+import { Task } from "../task/task";
 
 @Injectable()
 export class CrudService {

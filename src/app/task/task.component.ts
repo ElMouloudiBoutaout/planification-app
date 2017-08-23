@@ -1,9 +1,10 @@
 import { Title } from '@angular/platform-browser';
 import { Task } from './task';
-import { CrudService } from '../crud.service';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Ng2SmartTableModule, LocalDataSource } from 'ng2-smart-table';
 import { AfterViewInit } from '@angular/core';
+import { CrudService } from "../services/crud.service";
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -11,19 +12,19 @@ import { AfterViewInit } from '@angular/core';
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.css']
 })
-export class TaskComponent implements OnInit,AfterViewInit  {
+export class TaskComponent implements OnInit, AfterViewInit {
   source: LocalDataSource;
   errorMsg: string;
-  tasks : Task[];
-@Output() dataEvent = new EventEmitter();
+  tasks: Task[];
+  @Output() dataEvent = new EventEmitter();
 
-  constructor(private crud: CrudService) {
+  constructor(private crud: CrudService, private datePipe: DatePipe) {
     this.source = new LocalDataSource();
   }
   ngOnInit() {
     this.crud.getAllTasks().subscribe(tasks => {
-       this.source.load(tasks.content);
-       this.tasks = tasks.content;
+      this.source.load(tasks.content);
+      this.tasks = tasks.content;
     },
       errorResponse => this.errorMsg = errorResponse);
   }
@@ -32,31 +33,33 @@ export class TaskComponent implements OnInit,AfterViewInit  {
 
   createTask(task: Task): void {
     this.crud.addTask(task).then
-      (task => { this.source.append(task);});
+      (task => { this.source.append(task); });
   }
 
-  deleteTask(task : Task){
-  this.crud.deleteTask(task).subscribe();
-}  
+  deleteTask(task: Task) {
+    this.crud.deleteTask(task).subscribe();
+  }
 
-updateTask(task : Task){
-    this.crud.updateTask0(task).subscribe(task=>console.log(task));
-}
+
+
+  updateTask(task: Task) {
+    this.crud.updateTask0(task).subscribe(task => console.log(task));
+  }
 
   table = {
-     add : {
-        confirmCreate : true
-      },
-      delete : {
-        confirmDelete : true,
-      },
-      edit:{
-        confirmSave : true,
-        mode : 'inline'
-      },
+    add: {
+      confirmCreate: true
+    },
+    delete: {
+      confirmDelete: true,
+    },
+    edit: {
+      confirmSave: true,
+      mode: 'inline'
+    },
     columns: {
-      id : {
-        tite : 'ID'
+      id: {
+        tite: 'ID'
       },
       name: {
         title: 'Name',
@@ -64,11 +67,21 @@ updateTask(task : Task){
       },
       startD: {
         title: 'Start',
-        editable: false
+        editable: false,
+        valuePrepareFunction: (date) => { 
+          var raw = new Date(date);
+          var formatted = this.datePipe.transform(raw, 'dd MMM yyyy hh:mm');
+          return formatted; 
+        }
       },
       endD: {
         title: 'End',
-        editable: false
+        editable: false,
+        valuePrepareFunction: (date) => { 
+          var raw = new Date(date);
+          var formatted = this.datePipe.transform(raw, 'dd MMM yyyy hh:mm');
+          return formatted; 
+        }
       },
       note: {
         title: 'Note'
@@ -81,48 +94,54 @@ updateTask(task : Task){
   };
 
 
- onCreateConfirm(event) {
+  onCreateConfirm(event) {
     if (window.confirm('Are you sure you want to create?')) {
-      let task = new Task(null,event.newData.name,event.newData.note
-                         ,event.newData.done,event.newData.startD,event.newData.endD)
-      console.log(task);                   
+      let task = new Task(null, event.newData.name, event.newData.note
+        , event.newData.done, event.newData.startD, event.newData.endD)
+      console.log(task);
       event.confirm.resolve(event.newData);
       this.createTask(task);
     } else {
       event.confirm.reject();
     }
-}
+  }
 
-onDeleteConfirm(event) {
+  onDeleteConfirm(event) {
     if (window.confirm('Are you sure you want to delete?')) {
       event.confirm.resolve();
       this.deleteTask(event.data);
     } else {
       event.confirm.reject();
     }
-}
+  }
 
- onUpdate(event) {
+  onUpdate(event) {
     if (window.confirm('Are you sure you want to update?')) {
-       let task = new Task(event.newData.id,event.newData.name,event.newData.note
-                         ,event.newData.done,event.newData.startD,event.newData.endD)
+      let task = new Task(event.newData.id, event.newData.name, event.newData.note
+        , event.newData.done, event.newData.startD, event.newData.endD)
       event.confirm.resolve(event.newData);
-       this.updateTask(task);
+      this.updateTask(task);
     } else {
       event.confirm.reject();
     }
-}
+  }
 
-sendData(){
-  this.dataEvent.emit(this.source);
-  console.log(1);
-  console.log(this.source);
+  sendData() {
+    this.dataEvent.emit(this.source);
+    console.log(1);
+    console.log(this.source);
     console.log(1);
 
-}
+  }
 
 
-    public ngAfterViewInit(): void {
-      this.sendData();
-    }
+  public ngAfterViewInit(): void {
+    this.sendData();
+  }
+
+public valuePrepareFunction(date : Date): string {
+const raw = new Date(date);
+const formatted = this.datePipe.transform(raw, 'dd/MMM/yyyy');
+return formatted; 
+    }   
 }
