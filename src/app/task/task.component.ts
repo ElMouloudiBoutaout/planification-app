@@ -58,9 +58,6 @@ export class TaskComponent implements OnInit, AfterViewInit {
       mode: 'inline'
     },
     columns: {
-      id: {
-        tite: 'ID'
-      },
       name: {
         title: 'Name',
         editable: false
@@ -68,19 +65,19 @@ export class TaskComponent implements OnInit, AfterViewInit {
       startD: {
         title: 'Start',
         editable: false,
-        valuePrepareFunction: (date) => { 
+        valuePrepareFunction: (date) => {
           var raw = new Date(date);
           var formatted = this.datePipe.transform(raw, 'dd MMM yyyy hh:mm');
-          return formatted; 
+          return formatted;
         }
       },
       endD: {
         title: 'End',
         editable: false,
-        valuePrepareFunction: (date) => { 
+        valuePrepareFunction: (date) => {
           var raw = new Date(date);
           var formatted = this.datePipe.transform(raw, 'dd MMM yyyy hh:mm');
-          return formatted; 
+          return formatted;
         }
       },
       note: {
@@ -88,20 +85,25 @@ export class TaskComponent implements OnInit, AfterViewInit {
       },
       done: {
         title: 'done',
-        editor: { 'type': 'checkbox' }
+        editor: { 'type': 'checkbox' },
       }
     }
   };
 
-
   onCreateConfirm(event) {
-    if (window.confirm('Are you sure you want to create?')) {
-      let task = new Task(null, event.newData.name, event.newData.note
-        , event.newData.done, event.newData.startD, event.newData.endD)
-      console.log(task);
-      event.confirm.resolve(event.newData);
-      this.createTask(task);
-    } else {
+    if (0 <= Number(event.newData.note) && Number(event.newData.note) <= 100) {
+      if (window.confirm('Are you sure you want to create?')) {
+        let task = new Task(null, event.newData.name, event.newData.note
+          , event.newData.done, event.newData.startD, event.newData.endD)
+        console.log(task);
+        event.confirm.resolve(event.newData);
+        this.createTask(task);
+      } else {
+        event.confirm.reject();
+      }
+    }
+    else {
+      alert("La note doit etre entre 0 et 100");
       event.confirm.reject();
     }
   }
@@ -116,12 +118,18 @@ export class TaskComponent implements OnInit, AfterViewInit {
   }
 
   onUpdate(event) {
-    if (window.confirm('Are you sure you want to update?')) {
-      let task = new Task(event.newData.id, event.newData.name, event.newData.note
-        , event.newData.done, event.newData.startD, event.newData.endD)
-      event.confirm.resolve(event.newData);
-      this.updateTask(task);
-    } else {
+    if (0 <= Number(event.newData.note) && Number(event.newData.note) <= 100) {
+      if (window.confirm('Are you sure you want to update?')) {
+        let task = new Task(event.newData.id, event.newData.name, event.newData.note
+          , event.newData.done, event.newData.startD, event.newData.endD)
+        event.confirm.resolve(event.newData);
+        this.updateTask(task);
+      } else {
+        event.confirm.reject();
+      }
+    }
+    else {
+      alert("La note doit etre entre 0 et 100");
       event.confirm.reject();
     }
   }
@@ -139,9 +147,9 @@ export class TaskComponent implements OnInit, AfterViewInit {
     this.sendData();
   }
 
-public valuePrepareFunction(date : Date): string {
-const raw = new Date(date);
-const formatted = this.datePipe.transform(raw, 'dd/MMM/yyyy');
-return formatted; 
-    }   
+  public valuePrepareFunction(date: Date): string {
+    const raw = new Date(date);
+    const formatted = this.datePipe.transform(raw, 'dd/MMM/yyyy');
+    return formatted;
+  }
 }

@@ -14,6 +14,7 @@ import { FooterComponent } from './footer/footer.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { DatePipe } from '@angular/common';
+import { LoginService } from "./services/login.service";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { DatePipe } from '@angular/common';
   imports: [
     BrowserModule, FormsModule, HttpModule, Ng2SmartTableModule, ChartsModule
   ],
-  providers: [CrudService,DatePipe,{ provide: 'url', useValue: 'http://localhost:8080/tasks' }],
+  providers: [CrudService,LoginService,DatePipe,{ provide: 'url', useValue: 'http://localhost:8080/tasks' },
+  { provide: 'homeUrl', useValue: 'http://localhost:8080' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

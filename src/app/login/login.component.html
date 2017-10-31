@@ -1,5 +1,11 @@
-<form class="form-inline my-2 my-lg-0" method="POST">
-    <input class="form-control mr-sm-2" type="text" id="email" name="email" placeholder="Email">
-    <input class="form-control mr-sm-2" type="password" placeholder="Password" id="password" name="password">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Se connecter</button>
+
+
+
+<form class="form-inline my-2 my-lg-0" #loginForm="ngForm">
+    <input class="form-control mr-sm-2" 
+    type="text" [(ngModel)]="email" type="email" name="email" placeholder="Email" required/>
+    <input class="form-control mr-sm-2" 
+    type="password" [(ngModel)]="password" placeholder="Password" type="password"
+     name="password" required/>
+    <button [disabled]="!loginForm.form.valid" type="submit" class="btn btn-outline-success my-2 my-sm-0" (click)="login()">Se connecter</button>
 </form>
